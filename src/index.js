@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import SeasonDisplay from './SeasonDisplay';
+import Spinner from './Spinner';
 
 // const App = () => {
 // render() {
@@ -12,21 +14,24 @@ import ReactDOM from "react-dom";
 
 // This is how to write function into a class based one
 class App extends React.Component {
-  constructor(props) {
-    super(props);
+//   constructor(props) {
+//     super(props);
 
-// This is the only time we do direct assignment to this.state
-    this.state = { lat: null, errorMessage: '' };
+//  This is the only time we do direct assignment to this.state
+//     this.state = { lat: null, errorMessage: '' };
 
+//   }
+// This is the same as writing the whole contstructor, due to babel completing it for you.
+  state = { lat: null, errorMessage: ''};
+
+//
+  componentDidMount() {
     window.navigator.geolocation.getCurrentPosition(
-      (position) => {
         // We called setstate to update our state
-        this.setState({ lat: position.coords.latitude });
-      },
+      (position) => this.setState({ lat: position.coords.latitude }),
 
-      (err) => {
-        this.setState({ errorMessage: err.message })
-      }
+      (err) => this.setState({ errorMessage: err.message })
+
     );
   }
 
@@ -37,10 +42,10 @@ class App extends React.Component {
     }
 
     if (!this.state.errorMessage && this.state.lat) {
-      return <div>Latitude: {this.state.lat}</div>
+      return <SeasonDisplay lat={this.state.lat} />
     }
 
-    return <div>Loading!</div>;
+    return <Spinner />;
   }
 }
 
